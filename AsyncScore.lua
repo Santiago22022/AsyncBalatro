@@ -47,8 +47,7 @@ local function make_logger(enabled)
 end
 
 local default_config = safe_load("config.lua") or {}
-local saved_config = SMODS.current_mod and SMODS.current_mod.config or {}
-local config = merge_config(default_config, saved_config)
+local config = merge_config(default_config, {})
 local logger = make_logger(config.debug_logging)
 
 local function instantiate(mod, ...)
@@ -140,7 +139,6 @@ function AsyncScore:init()
     self.performance_monitor:init()
     self.compatibility:check_mods()
     self:hook_scoring_system()
-    self:setup_config_ui()
 end
 
 function AsyncScore:hook_scoring_system()
@@ -172,73 +170,14 @@ function AsyncScore:hook_scoring_system()
 end
 
 function AsyncScore:should_use_async(cards, hand)
-    local joker_count = G.jokers and #G.jokers.cards or 0
-    local complexity_threshold = self.config.complexity_threshold or 10
-    if joker_count >= complexity_threshold then
-        return true
-    end
-    return self.performance_monitor:is_performance_poor()
+    return true
 end
 
 function AsyncScore:should_use_async_joker(card, context)
-    if self.compatibility:is_cryptid_joker(card) then
-        return true
-    end
-    return self.performance_monitor:is_performance_poor()
+    return true
 end
 
 function AsyncScore:setup_config_ui()
-    if SMODS.current_mod and SMODS.current_mod.config_tab then
-        local config_tab = SMODS.current_mod.config_tab
-        config_tab:add_setting({
-            id = "complexity_threshold",
-            name = "Async Threshold",
-            desc = "Number of jokers before async processing kicks in",
-            type = "slider",
-            min = 5,
-            max = 50,
-            default = 10,
-            step = 1
-        })
-        config_tab:add_setting({
-            id = "performance_monitoring",
-            name = "Performance Monitoring",
-            desc = "Monitor and log performance metrics",
-            type = "toggle",
-            default = true
-        })
-        config_tab:add_setting({
-            id = "debug_logging",
-            name = "Debug Logging",
-            desc = "Enable detailed debug logging",
-            type = "toggle",
-            default = false
-        })
-        config_tab:add_setting({
-            id = "fallback_mode",
-            name = "Fallback Mode",
-            desc = "Automatically fallback to sync calculation if async fails",
-            type = "toggle",
-            default = true
-        })
-        config_tab:add_setting({
-            id = "retrigger_optimization",
-            name = "Retrigger Optimization",
-            desc = "Fast retrigger processing (requires Talisman's 'Disable Scoring Animations')",
-            type = "toggle",
-            default = true
-        })
-        config_tab:add_setting({
-            id = "retrigger_batch_size",
-            name = "Retrigger Batch Size",
-            desc = "Maximum number of retriggers to process together",
-            type = "slider",
-            min = 5,
-            max = 50,
-            default = 10,
-            step = 1
-        })
-    end
 end
 
 function AsyncScore:update(dt)

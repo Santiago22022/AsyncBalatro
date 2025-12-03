@@ -1,54 +1,38 @@
-# AsyncScore - Asynchronous Scoring Optimization for Balatro
+# AsyncScore
 
-AsyncScore is a performance optimization mod for Balatro that reduces lag in heavily modded games by implementing asynchronous scoring calculations. It's specifically designed to work with popular mods like Cryptid (100+ jokers) and Talisman (extended number systems).
+Mod de optimización para Balatro que estabiliza el cálculo de puntuaciones en partidas con muchos jokers y mods pesados.
 
-## Features
+## Qué hace
+- Cachea resultados de manos y jokers para repetir cálculos sin bloquear el juego.
+- Decide cuándo activarse según número de jokers y rendimiento reciente.
+- Compatibilidad básica con Cryptid y Talisman (incluye detección de modo rápido de Talisman).
+- Protección contra fallos: si algo falla, vuelve al cálculo original y deja registro en consola.
 
-### 🚀 Performance Optimization
-- **Asynchronous Processing**: Complex scoring calculations run without blocking the main game thread
-- **Intelligent Threshold Detection**: Automatically switches to async mode when performance suffers
-- **Coroutine-Based Architecture**: Uses Lua coroutines for smooth, non-blocking calculations
-- **Adaptive Performance**: Dynamically adjusts processing based on current performance
+## Instalación
+1) Copia la carpeta del mod en `%AppData%/Balatro/Mods/AsyncScore/`.
+2) Estructura mínima:
+```
+%AppData%/Balatro/Mods/
+├── Steamodded/
+├── Talisman/
+├── Cryptid/
+└── AsyncScore/
+    ├── AsyncScore.lua
+    ├── AsyncScore.json
+    ├── config.lua
+    ├── lib/
+    └── localization/
+```
+3) Inicia el juego y activa AsyncScore en el menú de mods.
 
-### Installation Steps
-1. Download the latest AsyncScore release
-2. Extract to `%AppData%/Balatro/Mods/AsyncScore/`
-3. Ensure the folder structure matches:
-   ```
-   %AppData%/Balatro/Mods/
-   ├── Steamodded/
-   ├── Talisman/
-   ├── Cryptid/
-   └── AsyncScore/
-       ├── AsyncScore.lua
-       ├── AsyncScore.json
-       ├── lib/
-       ├── localization/
-       └── README.md
-   ```
-4. Launch Balatro and verify AsyncScore appears in the Mods menu
+## Ajustes rápidos
+- Async Threshold: jokers necesarios para activar el modo rápido.
+- Performance Monitoring: habilita la detección automática de bajadas de FPS.
+- Retrigger Optimization: reutiliza efectos seguros cuando las animaciones están desactivadas en Talisman.
+- Debug Logging: muestra trazas en consola para diagnósticos.
+- Configuración solo en `config.lua`; no hay menú in‑game.
+- Optimizaciones siempre activas: no hay espera por umbrales ni detección de rendimiento.
 
-
-## How It Works
-
-### Async
-AsyncScore uses Lua coroutines to break up complex scoring calculations into smaller chunks that can be processed over multiple frames. This prevents the game from freezing during heavy joker calculations.
-
-```lua
--- Example: Processing cards in chunks
-local chunk_size = 5
-local processed = 0
-
-while processed < #cards do
-    -- Process chunk of cards
-    local end_idx = math.min(processed + chunk_size, #cards)
-    
-    for i = processed + 1, end_idx do
-        -- Perform scoring operations
-        if should_yield() then
-            coroutine.yield() -- Give control back to main thread
-        end
-    end
-    
-    processed = end_idx
-end
+## Notas de estabilidad
+- Si otro mod sustituye `calculate_hand` o `calculate_joker` después de AsyncScore, vuelve a cargar los mods para que el hook quede primero.
+- El caché se limpia de forma automática con TTL y límite de entradas para evitar fugas de memoria.
