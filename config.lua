@@ -1,47 +1,30 @@
--- AsyncScore Configuration
 return {
-    -- Performance settings
-    complexity_threshold = 1,          -- Number of jokers before async kicks in
-    max_operations_per_frame = 50,      -- Max operations per frame in async mode
-    performance_monitoring = true,      -- Enable performance monitoring
-    
-    -- Async processing settings
-    chunk_size = 5,                     -- Cards processed per chunk
-    async_timeout = 1.0,               -- Max time for async operation (seconds)
-    fallback_mode = true,              -- Fallback to sync if async fails
-    
-    -- Caching settings
-    enable_caching = true,             -- Enable result caching
-    cache_size_limit = 1000,           -- Max cached results
-    cache_ttl = 300,                   -- Cache time-to-live (seconds)
-    
-    -- Debug settings
-    debug_logging = false,             -- Enable debug output
-    performance_reports = true,        -- Generate performance reports
-    report_interval = 30,              -- Report interval (seconds)
-    
-    -- Compatibility settings
-    cryptid_compatibility = true,      -- Enable Cryptid-specific optimizations
-    talisman_compatibility = true,     -- Enable Talisman number system support
-    auto_detect_complex_jokers = true, -- Automatically detect complex jokers
-    
-    -- Advanced settings
-    adaptive_threshold = true,         -- Adapt threshold based on performance
-    prioritize_calculation = true,     -- Prioritize important calculations
-    memory_management = true,          -- Enable memory optimization
-    
-    -- UI settings
-    show_performance_overlay = false,  -- Show performance info overlay
-    overlay_position = "top_right",    -- Position of overlay
-    
-    -- Retrigger optimization (requires Talisman's "Disable Scoring Animations")
-    retrigger_optimization = true,     -- Enable fast retrigger processing
-    retrigger_batch_size = 5,         -- Max retriggers to batch together
-    retrigger_batch_timeout = 0.1,     -- Max time to wait for batch completion (seconds)
-    safe_retrigger_caching = true,     -- Cache retrigger results for known safe jokers
-    
-    -- Experimental features
-    predictive_caching = false,        -- Predict and pre-cache likely calculations
-    distributed_processing = false,    -- Distribute calculations across multiple coroutines
-    smart_batching = true             -- Intelligently batch similar calculations
+    complexity_threshold = 8,
+    max_operations_per_frame = 50,
+    performance_monitoring = true,
+    chunk_size = 5,
+    async_timeout = 1.0,
+    fallback_mode = true,
+    enable_caching = true,
+    cache_size_limit = 1000,
+    cache_ttl = 300,
+    debug_logging = false,
+    performance_reports = true,
+    report_interval = 30,
+    cryptid_compatibility = true,
+    talisman_compatibility = true,
+    auto_detect_complex_jokers = true,
+    adaptive_threshold = true,
+    prioritize_calculation = true,
+    memory_management = true,
+    show_performance_overlay = false,
+    overlay_position = "top_right",
+    retrigger_optimization = true,
+    retrigger_batch_size = 5,
+    retrigger_batch_timeout = 0.1,
+    safe_retrigger_caching = true,
+    predictive_caching = false,
+    distributed_processing = false,
+    smart_batching = true,
+    performance_threshold = 1 / 30
 }

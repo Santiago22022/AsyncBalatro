@@ -3,7 +3,7 @@
     "id": "AsyncScore",
     "author": "mxkph",
     "description": "Asynchronous scoring optimization mod that reduces lag in heavily modded games with Cryptid and Talisman compatibility",
-    "version": "1.0.0",
+    "version": "1.1.0",
     "min_steamodded_version": "1.0.0",
     "dependencies": [],
     "conflicts": [],
